@@ -13,12 +13,7 @@ class {{Feature}}Screen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         if (state is {{Feature}}Loaded) {
-          return ListView.builder(
-            itemCount: state.items.length,
-            itemBuilder: (context, index) {
-              return ListTile(title: Text(state.items[index].toString()));
-            },
-          );
+          return Text("Hello!");
         }
         if (state is {{Feature}}Error) {
           return Center(child: Text(state.message));

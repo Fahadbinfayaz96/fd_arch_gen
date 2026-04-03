@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'package:arch_gen/generators/core_generator.dart';
-import 'package:arch_gen/untils/naming.dart';
+import 'package:arch_gen/utils/naming.dart';
 import 'package:args/args.dart';
 
 import '../internals/config.dart';
-import '../untils/files_utils.dart';
-import '../untils/pubspec_updater.dart';
-import '../untils/template_engine.dart';
+import '../utils/files_utils.dart';
+import '../utils/path_resolver.dart';
+import '../utils/pubspec_updater.dart';
+import '../utils/template_engine.dart';
 import 'di_generator.dart';
 
 void generateFeature(String name, ArchGenConfig config) {
@@ -20,14 +21,7 @@ void generateFeature(String name, ArchGenConfig config) {
     ensureDependencies(['flutter_riverpod']);
   }
 
-  ensureDependencies([
-    'dartz',
-    'get_it',
-    'http',
-    'hive',
-    'hive_flutter',
-    'connectivity_plus',
-  ]);
+  ensureDependencies(['dartz', 'get_it', 'http', 'hive', 'hive_flutter']);
 
   generateCore();
   generateDI();
@@ -100,19 +94,16 @@ void _generateBloc(
 ) {
   final blocPath = '$base/presentation/bloc';
 
-  // Generate bloc.dart from template
-  final blocTemplate = 'lib/templates/bloc/bloc.dart.tpl';
+  final blocTemplate = PathResolver.getTemplatePath('bloc/bloc.dart.tpl');
   final blocVars = {'Feature': feature, 'feature_snake': snake};
   final blocContent = renderTemplate(blocTemplate, blocVars);
   safeWrite('$blocPath/${snake}_bloc.dart', blocContent);
 
-  // Generate event.dart from template
-  final eventTemplate = 'lib/templates/bloc/event.dart.tpl';
+  final eventTemplate = PathResolver.getTemplatePath('bloc/event.dart.tpl');
   final eventContent = renderTemplate(eventTemplate, blocVars);
   safeWrite('$blocPath/${snake}_event.dart', eventContent);
 
-  // Generate state.dart from template
-  final stateTemplate = 'lib/templates/bloc/state.dart.tpl';
+  final stateTemplate = PathResolver.getTemplatePath('bloc/state.dart.tpl');
   final stateContent = renderTemplate(stateTemplate, blocVars);
   safeWrite('$blocPath/${snake}_state.dart', stateContent);
 }
@@ -123,7 +114,9 @@ void _generateRiverpod(
   String snake,
   ArchGenConfig config,
 ) {
-  final templatePath = 'lib/templates/riverpod/provider.dart.tpl';
+  final templatePath = PathResolver.getTemplatePath(
+    'riverpod/provider.dart.tpl',
+  );
   final outputPath = '$base/presentation/providers/${snake}_provider.dart';
 
   final vars = {'Feature': feature, 'snake': snake};
@@ -142,9 +135,11 @@ void _generateScreen(
 
   String templatePath;
   if (config.stateManagement == 'bloc') {
-    templatePath = 'lib/templates/screen/bloc_screen.dart.tpl';
+    templatePath = PathResolver.getTemplatePath('screen/bloc_screen.dart.tpl');
   } else {
-    templatePath = 'lib/templates/screen/riverpod_screen.dart.tpl';
+    templatePath = PathResolver.getTemplatePath(
+      'screen/riverpod_screen.dart.tpl',
+    );
   }
 
   final vars = {'Feature': feature, 'snake': snake};
@@ -153,7 +148,7 @@ void _generateScreen(
 }
 
 void _generateUsecase(String base, String feature, String snake) {
-  final templatePath = 'lib/templates/usecase.dart.tpl';
+  final templatePath = PathResolver.getTemplatePath('usecase.dart.tpl');
   final outputPath = '$base/domain/usecases/${snake}_usecase.dart';
   final vars = {'Feature': feature, 'snake': snake};
   final content = renderTemplate(templatePath, vars);
@@ -161,7 +156,7 @@ void _generateUsecase(String base, String feature, String snake) {
 }
 
 void _generateRepository(String base, String feature, String snake) {
-  final templatePath = 'lib/templates/repository.dart.tpl';
+  final templatePath = PathResolver.getTemplatePath('repository.dart.tpl');
   final outputPath = '$base/domain/repositories/${snake}_repository.dart';
   final vars = {'Feature': feature, 'snake': snake};
   final content = renderTemplate(templatePath, vars);
@@ -169,7 +164,7 @@ void _generateRepository(String base, String feature, String snake) {
 }
 
 void _generateDatasource(String base, String feature, String snake) {
-  final templatePath = 'lib/templates/datasource.dart.tpl';
+  final templatePath = PathResolver.getTemplatePath('datasource.dart.tpl');
   final outputPath = '$base/data/datasources/${snake}_remote_datasource.dart';
   final vars = {'Feature': feature, 'snake': snake};
   final content = renderTemplate(templatePath, vars);
@@ -177,7 +172,7 @@ void _generateDatasource(String base, String feature, String snake) {
 }
 
 void _generateRepositoryImpl(String base, String feature, String snake) {
-  final templatePath = 'lib/templates/repository_impl.dart.tpl';
+  final templatePath = PathResolver.getTemplatePath('repository_impl.dart.tpl');
   final outputPath =
       '$base/data/repositories_impl/${snake}_repository_impl.dart';
   final vars = {'Feature': feature, 'snake': snake};
@@ -186,7 +181,7 @@ void _generateRepositoryImpl(String base, String feature, String snake) {
 }
 
 void _generateEntity(String base, String feature, String snake) {
-  final templatePath = 'lib/templates/entity.dart.tpl';
+  final templatePath = PathResolver.getTemplatePath('entity.dart.tpl');
   final outputPath = '$base/domain/entities/${snake}_entity.dart';
   final vars = {'Feature': feature, 'snake': snake};
   final content = renderTemplate(templatePath, vars);
@@ -194,7 +189,7 @@ void _generateEntity(String base, String feature, String snake) {
 }
 
 void _generateModel(String base, String feature, String snake) {
-  final templatePath = 'lib/templates/model.dart.tpl';
+  final templatePath = PathResolver.getTemplatePath('model.dart.tpl');
   final outputPath = '$base/data/models/${snake}_model.dart';
   final vars = {'Feature': feature, 'snake': snake};
   final content = renderTemplate(templatePath, vars);

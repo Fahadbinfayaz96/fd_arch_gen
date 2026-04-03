@@ -1,14 +1,21 @@
 import 'dart:io';
+import 'package:path/path.dart' as path;
 
-import '../untils/files_utils.dart' show safeWrite;
+import '../utils/files_utils.dart' show safeWrite;
+
+String getProjectLibPath() {
+  final projectRoot = Directory.current.path;
+  return path.join(projectRoot, 'lib');
+}
 
 void generateDI() {
-  final path = 'lib/core/di/injection_container.dart';
+  final libPath = getProjectLibPath();
+  final diPath = path.join(libPath, 'core', 'di', 'injection_container.dart');
 
-  final file = File(path);
+  final file = File(diPath);
 
   if (!file.existsSync()) {
-    safeWrite(path, '''  
+    safeWrite(diPath, '''  
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
@@ -18,13 +25,14 @@ Future<void> init() async {
 }
 ''');
 
-    print("📦 DI container created");
+    print("📦 DI container created at: $diPath");
   }
 }
 
 void registerFeatureDI(String feature, String snake) {
-  final path = 'lib/core/di/injection_container.dart';
-  final file = File(path);
+  final libPath = getProjectLibPath();
+  final diPath = path.join(libPath, 'core', 'di', 'injection_container.dart');
+  final file = File(diPath);
 
   if (!file.existsSync()) return;
 
@@ -38,7 +46,6 @@ import '../../features/$snake/domain/repositories/${snake}_repository.dart';
 import '../../features/$snake/domain/usecases/${snake}_usecase.dart';
 ''';
 
-  // ✅ Add imports after last import
   if (!content.contains('features/$snake')) {
     final lines = content.split('\n');
     int lastImportIndex = -1;
@@ -55,7 +62,6 @@ import '../../features/$snake/domain/usecases/${snake}_usecase.dart';
     }
   }
 
-  // ✅ Registration code
   final registration =
       '''
 
@@ -73,18 +79,16 @@ import '../../features/$snake/domain/usecases/${snake}_usecase.dart';
   );
 ''';
 
-  // Check for duplicates
   if (content.contains('${feature}Repository')) {
     print("⚠️ DI already registered for $feature");
     return;
   }
 
-  // Insert registration inside init()
   final marker = 'Future<void> init() async {';
 
   if (content.contains(marker)) {
     final updated = content.replaceFirst(marker, '$marker$registration');
-    safeWrite(path, updated); // ✅ Use safeWrite
+    safeWrite(diPath, updated);
     print("🔗 DI registered for $feature");
   }
 }

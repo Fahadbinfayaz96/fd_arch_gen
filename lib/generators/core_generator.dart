@@ -1,28 +1,44 @@
 import 'dart:io';
+import 'package:path/path.dart' as path;
+import 'package:arch_gen/utils/files_utils.dart';
 
-import 'package:arch_gen/untils/files_utils.dart';
+String getProjectLibPath() {
+  final projectRoot = Directory.current.path;
+  return path.join(projectRoot, 'lib');
+}
 
 void generateCore() {
+  final libPath = getProjectLibPath();
+
   final coreDirs = [
-    'lib/core/error',
-    'lib/core/network',
-    'lib/core/utils',
-    'lib/core/usecase',
+    path.join(libPath, 'core', 'error'),
+    path.join(libPath, 'core', 'network'),
+    path.join(libPath, 'core', 'utils'),
+    path.join(libPath, 'core', 'usecase'),
   ];
 
   for (var dir in coreDirs) {
     Directory(dir).createSync(recursive: true);
   }
 
-  safeWrite('lib/core/error/failure.dart', _failureContent());
+  safeWrite(
+    path.join(libPath, 'core', 'error', 'failure.dart'),
+    _failureContent(),
+  );
+  safeWrite(
+    path.join(libPath, 'core', 'error', 'exceptions.dart'),
+    _exceptionsContent(),
+  );
+  safeWrite(
+    path.join(libPath, 'core', 'network', 'api_client.dart'),
+    _apiClientContent(),
+  );
+  safeWrite(
+    path.join(libPath, 'core', 'usecase', 'usecase.dart'),
+    _usecaseContent(),
+  );
 
-  safeWrite('lib/core/error/exceptions.dart', _exceptionsContent());
-
-  safeWrite('lib/core/network/api_client.dart', _apiClientContent());
-
-  safeWrite('lib/core/usecase/usecase.dart', _usecaseContent());
-
-  print("📦 Core generated");
+  print("📦 Core generated at: $libPath/core");
 }
 
 String _failureContent() => '''
