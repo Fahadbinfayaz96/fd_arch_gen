@@ -25,7 +25,10 @@ Create a feature with Riverpod
 fd_arch_gen feature user_profile --riverpod
 With Equatable (BLoC only)
 fd_arch_gen feature products --bloc --equatable
+
+
 📁 Generated Structure
+
 lib/features/todo/
 ├── data/
 │   ├── datasources/
@@ -38,19 +41,26 @@ lib/features/todo/
 └── presentation/
     ├── screens/
     └── bloc/ (or providers/)
+
+
 ⚙️ Configuration
 
 Create arch_gen.yaml in your project root:
-
 state_management: bloc
 use_equatable: true
+
+
 🧠 Commands
+
 Command	Description
 fd_arch_gen feature <name>	Generate a feature
 --bloc	Use BLoC
 --riverpod	Use Riverpod
 --equatable	Add Equatable
+
+
 📌 What gets generated?
+
 Core utilities (failures, API client)
 Dependency Injection (GetIt)
 Feature layers with correct imports
