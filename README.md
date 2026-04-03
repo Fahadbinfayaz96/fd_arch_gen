@@ -16,105 +16,63 @@ A Clean Architecture code generator for Flutter that creates complete features w
 
 ## Installation
 
-````bash
+```bash
 dart pub global activate fd_arch_gen
-Quick Start
-1. Create a new feature with BLoC
-bash
+⚡ Quick Start
+Create a feature with BLoC
 fd_arch_gen feature todo --bloc
-2. Create a feature with Riverpod
-bash
+Create a feature with Riverpod
 fd_arch_gen feature user_profile --riverpod
-3. With Equatable (for BLoC)
-bash
+With Equatable (BLoC only)
 fd_arch_gen feature products --bloc --equatable
-Generated Structure
-text
+📁 Generated Structure
 lib/features/todo/
 ├── data/
 │   ├── datasources/
-│   │   └── todo_remote_datasource.dart
 │   ├── models/
-│   │   └── todo_model.dart
 │   └── repositories_impl/
-│       └── todo_repository_impl.dart
 ├── domain/
 │   ├── entities/
-│   │   └── todo_entity.dart
 │   ├── repositories/
-│   │   └── todo_repository.dart
 │   └── usecases/
-│       └── todo_usecase.dart
 └── presentation/
     ├── screens/
-    │   └── todo_screen.dart
-    └── bloc/ (or providers/ for Riverpod)
-        ├── todo_bloc.dart
-        ├── todo_event.dart
-        └── todo_state.dart
-Configuration
+    └── bloc/ (or providers/)
+⚙️ Configuration
+
 Create arch_gen.yaml in your project root:
 
-yaml
-# Default configuration
-state_management: bloc  # bloc or riverpod
-use_equatable: true     # only for BLoC
-Commands
+state_management: bloc
+use_equatable: true
+🧠 Commands
 Command	Description
-fd_arch_gen feature <name>	Generate a new feature
---bloc	Use BLoC (default)
+fd_arch_gen feature <name>	Generate a feature
+--bloc	Use BLoC
 --riverpod	Use Riverpod
---equatable	Add Equatable support
-Requirements
-Flutter SDK
-
-Dart SDK >= 3.0.0
-
-What gets generated automatically?
-✅ Core files (failures, exceptions, API client)
-
-✅ Dependency injection container with GetIt
-
-✅ All feature layers with proper imports
-
-✅ DI registration for the feature
-
-✅ Required dependencies added to pubspec.yaml
-
-Example
-bash
-# Generate a blog feature with Riverpod
+--equatable	Add Equatable
+📌 What gets generated?
+Core utilities (failures, API client)
+Dependency Injection (GetIt)
+Feature layers with correct imports
+DI registration
+Required dependencies in pubspec.yaml
+💡 Example
 fd_arch_gen feature blog --riverpod
 
-# Output:
-# 📦 Core generated
-# 📦 DI container created
-# 📦 Generated Riverpod files
-# 🔗 DI registered for Blog
-# ✅ Feature 'blog' generated using riverpod
+Output:
 
-License
-MIT License - see LICENSE file for details
+📦 Core generated
+📦 DI container created
+📦 Generated Riverpod files
+🔗 DI registered for Blog
+✅ Feature 'blog' generated using riverpod
+🔗 Links
+📦 Pub.dev
+💻 GitHub Repository
+🐛 Report Issues
+📄 License
 
-Author
-Fahad Bin Fayaz
+MIT License © Fahad Bin Fayaz
+:::
 
-Repository
-GitHub - Fahadbinfayaz96/fd_arch_gen
-
-Issues
-Report bugs or suggest features on GitHub Issues
-
-text
-
-
-```bash
-git add README.md
-git commit -m "docs: add README for fd_arch_gen"
-git push origin main
-
-
-- **Pub.dev:** https://pub.dev/packages/fd_arch_gen
-- **GitHub:** https://github.com/Fahadbinfayaz96/fd_arch_gen
-
-````
+```
