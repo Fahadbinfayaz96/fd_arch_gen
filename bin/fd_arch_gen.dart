@@ -1,5 +1,5 @@
 import 'package:args/args.dart';
-import 'package:clean_arch_gen/commands/feature.dart';
+import 'package:fd_arch_gen/commands/feature.dart';
 
 void main(List<String> arguments) {
   try {

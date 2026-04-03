@@ -1,4 +1,4 @@
-import 'package:clean_arch_gen/utils/naming.dart';
+import 'package:fd_arch_gen/utils/naming.dart';
 import 'package:test/test.dart';
 
 void main() {

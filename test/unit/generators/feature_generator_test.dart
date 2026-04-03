@@ -1,5 +1,5 @@
-import 'package:clean_arch_gen/generators/feature_generator.dart';
-import 'package:clean_arch_gen/internals/config.dart';
+import 'package:fd_arch_gen/generators/feature_generator.dart';
+import 'package:fd_arch_gen/internals/config.dart';
 import 'package:test/test.dart';
 import 'dart:io';
 

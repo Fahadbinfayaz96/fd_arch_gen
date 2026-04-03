@@ -1,15 +1,15 @@
-name: clean_arch_gen
+name: fd_arch_gen
 description: A Clean Architecture code generator for Flutter (Beta)
 version: 1.0.0-beta.1
-homepage: https://github.com/Fahadbinfayaz96/clean_arch_gen
-repository: https://github.com/Fahadbinfayaz96/clean_arch_gen
+homepage: https://github.com/Fahadbinfayaz96/fd_arch_gen
+repository: https://github.com/Fahadbinfayaz96/fd_arch_gen
 license: MIT
 
 environment:
   sdk: ^3.9.2
 
 executables:
-  arch_gen: clean_arch_gen
+  fd_arch_gen: fd_arch_gen
 
 dependencies:
   flutter_bloc: ^8.1.0
