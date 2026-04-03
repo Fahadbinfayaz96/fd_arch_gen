@@ -7,7 +7,6 @@ void main() {
     late String originalWorkingDir;
 
     setUp(() {
-      // Save original working directory
       originalWorkingDir = Directory.current.path;
 
       // Create a temporary Flutter project structure
