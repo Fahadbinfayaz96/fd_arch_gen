@@ -1,3 +1,7 @@
-## 1.0.0
+## 1.0.0-beta.1
 
-- Initial version.
+- Initial beta release
+- Support for BLoC and Riverpod state management
+- Generate Clean Architecture features with single command
+- Automatic dependency injection registration
+- Core files generation (error handling, API client, usecases)

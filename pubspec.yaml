@@ -1,6 +1,8 @@
 name: arch_gen
 description: A Clean Architecture code generator for Flutter (Beta)
 version: 1.0.0-beta.1
+homepage: https://github.com/Fahadbinfayaz96/arch_gen
+repository: https://github.com/Fahadbinfayaz96/arch_gen
 license: MIT
 
 environment:
