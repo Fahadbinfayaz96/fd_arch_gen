@@ -109,15 +109,13 @@ Report bugs or suggest features on GitHub Issues
 
 text
 
-## Now add this README to your repo:
 
 ```bash
-# Update README on GitHub
 git add README.md
 git commit -m "docs: add README for fd_arch_gen"
 git push origin main
 
-## Share your package!
+
 - **Pub.dev:** https://pub.dev/packages/fd_arch_gen
 - **GitHub:** https://github.com/Fahadbinfayaz96/fd_arch_gen
 
