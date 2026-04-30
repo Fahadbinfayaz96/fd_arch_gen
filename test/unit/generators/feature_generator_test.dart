@@ -40,7 +40,9 @@ dependencies:
     });
 
     test('generateFeature creates all required directories', () {
-      final config = ArchGenConfig(stateManagement: 'bloc', useEquatable: true);
+      final config = ArchGenConfig(
+        stateManagement: 'bloc',
+      );
 
       generateFeature('test_feature', config);
 
@@ -54,7 +56,9 @@ dependencies:
     });
 
     test('generateFeature creates BLoC files when configured', () {
-      final config = ArchGenConfig(stateManagement: 'bloc', useEquatable: true);
+      final config = ArchGenConfig(
+        stateManagement: 'bloc',
+      );
 
       generateFeature('bloc_feature', config);
 
@@ -81,7 +85,6 @@ dependencies:
     test('generateFeature creates Riverpod files when configured', () {
       final config = ArchGenConfig(
         stateManagement: 'riverpod',
-        useEquatable: false,
       );
 
       generateFeature('riverpod_feature', config);

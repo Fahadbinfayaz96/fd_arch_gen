@@ -1,3 +1,2 @@
 architecture: clean
-state_management: bloc
-use_equatable: true
+state_management: bloc # Options: bloc, cubit, riverpod, getx

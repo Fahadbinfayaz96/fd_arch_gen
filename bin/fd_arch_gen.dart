@@ -19,10 +19,12 @@ void main(List<String> arguments) {
       print("Usage: arch_gen <command>");
       print("\nAvailable commands:");
       print("  feature <name>    Generate a new feature");
-      print("\nOptions for feature command:");
+      print("Options for feature command:");
       print("  --bloc            Use BLoC for state management");
       print("  --riverpod        Use Riverpod for state management");
-      print("  --equatable       Use Equatable package");
+      print("  --getx            Use GetX for state management");
+      print(
+          "  --cubit           Use Cubit for state management (simplified BLoC)");
       return;
     }
 
@@ -62,16 +64,27 @@ void main(List<String> arguments) {
             help: 'Use Riverpod for state management',
           )
           ..addFlag(
-            'equatable',
-            defaultsTo: null,
-            help: 'Use Equatable package',
+            'getx',
+            negatable: false,
+            help: 'Use GetX for state management',
+          )
+          ..addFlag(
+            'cubit',
+            negatable: false,
+            help: 'Use Cubit for state management',
           );
 
         final results = parser.parse(arguments.skip(2));
 
-        if (results['bloc'] == true && results['riverpod'] == true) {
-          print("❌ Error: Cannot use both --bloc and --riverpod");
-          print("   Choose one state management solution");
+        int flagCount = 0;
+        if (results['bloc'] == true) flagCount++;
+        if (results['riverpod'] == true) flagCount++;
+        if (results['getx'] == true) flagCount++;
+        if (results['cubit'] == true) flagCount++;
+
+        if (flagCount > 1) {
+          print("❌ Error: Cannot use multiple state management flags");
+          print("   Choose one: --bloc, --riverpod, --getx, or --cubit");
           return;
         }
 

@@ -8,8 +8,8 @@ class {{Feature}}Model extends {{Feature}}Entity {
 
   factory {{Feature}}Model.fromJson(Map<String, dynamic> json) {
     return {{Feature}}Model(
-      id: json['id'],
-      name: json['name'],
+      id: json['id'] as int,
+      name: json['name'] as String,
     );
   }
 
@@ -18,5 +18,14 @@ class {{Feature}}Model extends {{Feature}}Entity {
       'id': id,
       'name': name,
     };
+  }
+  
+  // Helper for lists
+  static List<{{Feature}}Model> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => {{Feature}}Model.fromJson(json)).toList();
+  }
+  
+  static List<Map<String, dynamic>> toJsonList(List<{{Feature}}Model> models) {
+    return models.map((model) => model.toJson()).toList();
   }
 }

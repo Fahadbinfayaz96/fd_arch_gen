@@ -22,13 +22,14 @@ import 'di_generator.dart';
 
 void generateFeature(String name, ArchGenConfig config) {
   if (config.stateManagement == 'bloc') {
-    final deps = ['flutter_bloc'];
-    if (config.useEquatable) {
-      deps.add('equatable');
-    }
-    ensureDependencies(deps);
+    ensureDependencies(['flutter_bloc', 'equatable']);
   } else if (config.stateManagement == 'riverpod') {
     ensureDependencies(['flutter_riverpod']);
+  } else if (config.stateManagement == 'getx') {
+    ensureDependencies(['get']);
+  }
+  if (config.stateManagement == 'cubit') {
+    ensureDependencies(['flutter_bloc', 'equatable']);
   }
 
   ensureDependencies(['dartz', 'get_it', 'http']);
@@ -57,6 +58,9 @@ void generateFeature(String name, ArchGenConfig config) {
   } else if (config.stateManagement == 'riverpod') {
     dirs.add('$base/presentation/providers');
   }
+  if (config.stateManagement == 'cubit') {
+    dirs.add('$base/presentation/cubit');
+  }
   for (var dir in dirs) {
     Directory(dir).createSync(recursive: true);
   }
@@ -67,6 +71,12 @@ void generateFeature(String name, ArchGenConfig config) {
   } else if (config.stateManagement == 'riverpod') {
     _generateRiverpod(base, feature, snake, config);
     print("📦 Generated Riverpod files");
+  } else if (config.stateManagement == 'getx') {
+    _generateGetX(base, feature, snake, config);
+    print("📦 Generated GetX files");
+  } else if (config.stateManagement == 'cubit') {
+    _generateCubit(base, feature, snake, config);
+    print("📦 Generated Cubit files");
   }
 
   _generateScreen(base, feature, snake, config);
@@ -77,7 +87,7 @@ void generateFeature(String name, ArchGenConfig config) {
   _generateRepositoryImpl(base, feature, snake);
   _generateUsecase(base, feature, snake);
 
-  registerFeatureDI(feature, snake);
+  registerFeatureDI(feature, snake, stateManagement: config.stateManagement);
 
   print('''
 ✅ Feature '$name' generated using ${config.stateManagement}
@@ -92,16 +102,39 @@ Your feedback helps improve the tool 🚀
 
 ArchGenConfig mergeFlags(ArchGenConfig config, ArgResults flags) {
   String state = config.stateManagement;
-  bool equatable = config.useEquatable;
 
   if (flags['bloc'] == true) state = 'bloc';
   if (flags['riverpod'] == true) state = 'riverpod';
+  if (flags['getx'] == true) state = 'getx';
+  if (flags['cubit'] == true) state = 'cubit';
 
-  if (flags.wasParsed('equatable')) {
-    equatable = flags['equatable'];
-  }
+  return config.copyWith(
+    stateManagement: state,
+  );
+}
 
-  return config.copyWith(stateManagement: state, useEquatable: equatable);
+void _generateGetX(
+  String base,
+  String feature,
+  String snake,
+  ArchGenConfig config,
+) {
+  final getxPath = '$base/presentation/getx';
+  Directory(getxPath).createSync(recursive: true);
+
+  final controllerTemplate =
+      PathResolver.getTemplatePath('getx/controller.dart.tpl');
+  final controllerVars = {'Feature': feature, 'snake': snake};
+  final controllerContent = renderTemplate(controllerTemplate, controllerVars);
+  safeWrite('$getxPath/${snake}_controller.dart', controllerContent);
+
+  final bindingTemplate = PathResolver.getTemplatePath('getx/binding.dart.tpl');
+  final bindingContent = renderTemplate(bindingTemplate, controllerVars);
+  safeWrite('$getxPath/${snake}_binding.dart', bindingContent);
+
+  final viewTemplate = PathResolver.getTemplatePath('getx/view.dart.tpl');
+  final viewContent = renderTemplate(viewTemplate, controllerVars);
+  safeWrite('$base/presentation/screens/${snake}_screen.dart', viewContent);
 }
 
 void _generateBloc(
@@ -143,6 +176,29 @@ void _generateRiverpod(
   safeWrite(outputPath, content);
 }
 
+void _generateCubit(
+  String base,
+  String feature,
+  String snake,
+  ArchGenConfig config,
+) {
+  final cubitPath = '$base/presentation/cubit';
+  Directory(cubitPath).createSync(recursive: true);
+
+  final cubitTemplate = PathResolver.getTemplatePath('cubit/cubit.dart.tpl');
+  final cubitVars = {
+    'Feature': feature,
+    'feature_snake': snake,
+    'useEquatable': 'true',
+  };
+  final cubitContent = renderTemplate(cubitTemplate, cubitVars);
+  safeWrite('$cubitPath/${snake}_cubit.dart', cubitContent);
+
+  final stateTemplate = PathResolver.getTemplatePath('cubit/state.dart.tpl');
+  final stateContent = renderTemplate(stateTemplate, cubitVars);
+  safeWrite('$cubitPath/${snake}_state.dart', stateContent);
+}
+
 void _generateScreen(
   String base,
   String feature,
@@ -154,10 +210,17 @@ void _generateScreen(
   String templatePath;
   if (config.stateManagement == 'bloc') {
     templatePath = PathResolver.getTemplatePath('screen/bloc_screen.dart.tpl');
-  } else {
+  } else if (config.stateManagement == 'riverpod') {
     templatePath = PathResolver.getTemplatePath(
       'screen/riverpod_screen.dart.tpl',
     );
+  } else if (config.stateManagement == 'cubit') {
+    templatePath = PathResolver.getTemplatePath('screen/cubit_screen.dart.tpl');
+  } else if (config.stateManagement == 'getx') {
+    return;
+  } else {
+    templatePath =
+        PathResolver.getTemplatePath('screen/riverpod_screen.dart.tpl');
   }
 
   final vars = {'Feature': feature, 'snake': snake};
