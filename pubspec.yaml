@@ -1,6 +1,6 @@
 name: fd_arch_gen
 description: A Clean Architecture code generator for Flutter with support for BLoC, Cubit, Riverpod, and GetX state management.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/Fahadbinfayaz96/fd_arch_gen
 repository: https://github.com/Fahadbinfayaz96/fd_arch_gen
 license: MIT

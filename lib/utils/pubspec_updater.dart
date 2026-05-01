@@ -1,12 +1,12 @@
 import 'dart:io';
 
 const Map<String, String> packageVersions = {
-  'flutter_bloc': '^8.1.0',
-  'equatable': '^2.0.5',
-  'flutter_riverpod': '^2.4.0',
-  'get': '^4.6.6',
+  'flutter_bloc': '^9.1.1',
+  'equatable': '^2.0.8',
+  'flutter_riverpod': '^2.6.1',
+  'get': '^4.7.3',
   'dartz': '^0.10.1',
-  'get_it': '^7.6.0',
+  'get_it': '^9.2.1',
   'http': '^1.1.0',
 };
 

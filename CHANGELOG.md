@@ -1,3 +1,11 @@
+## 1.0.1
+
+- **Fixed**: Template path resolution for globally installed package
+- **Fixed**: `fd_arch_gen` now correctly locates templates when activated from pub.dev
+- **Improved**: Better error messages when templates are not found
+
+---
+
 ## 1.0.0
 
 ### 🎉 First Stable Release - Production Ready!
@@ -37,6 +45,8 @@
 - Added example/ folder for pub.dev score
 - Improved CLI feedback message after generation
 - Minor improvements and bug fixes
+
+---
 
 ## 1.0.0-beta.3
 
